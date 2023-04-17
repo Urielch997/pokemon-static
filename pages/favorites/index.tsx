@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import { Layout } from 'src/components/layouts'
 import { FavoritePokemon } from 'src/components/pokemon'
