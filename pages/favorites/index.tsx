@@ -5,7 +5,7 @@ import { FavoritePokemon } from 'src/components/pokemon'
 import { NoFavorite } from 'src/components/ui'
 import { localFavorites } from 'src/utils'
 
-const index = () => {
+const Favorites = () => {
   const [favoritesPokemon, setfavoritesPokemon] = useState<number[]>([])
 
   useEffect(() => {
@@ -25,4 +25,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Favorites
