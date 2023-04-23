@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { pokeApi } from 'src/api'
 import { Layout } from 'src/components/layouts'
 import { pokemonFull, PokemonListResponse } from 'src/interfaces'
-import { localFavorites } from 'src/utils'
+import { getPokemons, localFavorites } from 'src/utils'
 
 interface Props {
   pokemon: pokemonFull
@@ -95,18 +95,22 @@ const PokemonByNamePage: NextPage<Props> = ({ pokemon }) => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { name } = params as { name: string };
 
-  const { data } = await pokeApi.get<pokemonFull>(`/pokemon/${name}`);
+  const pokemon = await getPokemons(name);
 
-  const  pokemon  = {
-    id:data.id,
-    name:data.name,
-    sprites:data.sprites
+  if(!pokemon){
+    return {
+      redirect:{
+        destination:"/",
+        permanent:false
+      }
+    }
   }
 
   return {
     props: {
       pokemon
-    }
+    },
+    revalidate:86400
   }
 }
 
@@ -122,7 +126,7 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
     paths: pokemonsName.map(name => ({
       params: { name }
     })),
-    fallback: false
+    fallback: 'blocking'
   }
 }
 
